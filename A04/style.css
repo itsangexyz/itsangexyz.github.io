@@ -1,0 +1,240 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #8d8b8b;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.banner {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: 3rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.navbar {
+    text-align: center;
+}
+
+.button {
+    appearance: none;
+    background-color: #a8a7a7;
+    border: 1px solid rgba(27, 31, 35, 0.15);
+    border-radius: 6px;
+    box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+    box-sizing: border-box;
+    color: #24292E;
+    cursor: pointer;
+    display: inline-block;
+    font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 15px;
+    list-style: none;
+    padding: 4px 10px;
+    position: relative;
+    transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    white-space: nowrap;
+    word-wrap: break-word;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.button:hover {
+    background-color: #F3F4F6;
+    text-decoration: none;
+    transition-duration: 0.1s;
+}
+
+.button:disabled {
+    background-color: #818181;
+    border-color: rgba(27, 31, 35, 0.15);
+    color: #959DA5;
+    cursor: default;
+}
+
+.button:active {
+    background-color: #818181;
+    box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
+    transition: none 0s;
+}
+
+.button:focus {
+    outline: 1px transparent;
+}
+
+.button:before {
+    display: none;
+}
+
+.button:-webkit-details-marker {
+    display: none;
+}
+
+.card-container {
+    width: 350px;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    z-index: 10;
+    transform: scale(1.02);
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+    color: black;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+
+}
+
+.card-container1 {
+    width: 350px;
+    height: 400px;
+    position: absolute;
+    top: 60%;
+    left: 20%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+    color: black;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.card-container2 {
+    width: 350px;
+    height: 400px;
+    position: absolute;
+    top: 60%;
+    left: 80%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+    color: black;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.review,
+.review1,
+.review2 {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 300;
+}
+
+.review1 p,
+.review p,
+.review2 p {
+    font-size: 15px;
+}
+
+.container1 h3,
+.container h3,
+.container2 h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.select-specs1 span,
+.select-specs span,
+.select-specs2 span {
+    display: inline-block;
+    text-align: center;
+    width: 55px;
+    height: 40px;
+    line-height: 20px;
+    font-size: 12px;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 10px 2px;
+}
+
+.select-specs span:hover,
+.select-specs1 span:hover,
+.select-specs2 span:hover {
+    cursor: pointer;
+    background: khaki;
+    color: rgb(10, 10, 10);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    border: 1px solid black;
+}
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+
+.price {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 15px 0 5px;
+}
+
+.price p {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.price a {
+    text-decoration: none;
+    background: rgb(167, 166, 166);
+    color: black;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 12px 25px;
+    border-radius: 6px;
+}
+
+@media (max-width: 600px) {
+    .card {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+
+    .banner {
+        font-size: 1.8rem;
+    }
+}
+
+/* 💻 Medium Devices: Two Columns */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .card {
+        flex: 1 1 45%;
+        max-width: 45%;
+    }
+
+    .banner {
+        font-size: 2.2rem;
+    }
+}
+
+/* 🖥️ Large Devices: Three Columns */
+@media (min-width: 1025px) {
+    .card {
+        flex: 1 1 30%;
+        max-width: 30%;
+    }
+
+    .banner {
+        font-size: 2.5rem;
+    }
+}
