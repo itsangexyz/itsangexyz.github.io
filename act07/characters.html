@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>One Piece Characters</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: url('2.jpg') no-repeat center center / cover;
+            color: white;
+        }
+
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.75);
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 100px;
+        }
+
+        .card {
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            z-index: 1;
+        }
+
+        .form-control {
+            border-radius: 30px;
+        }
+
+        #loadingSpinner {
+            display: none;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><img src="logo.png" alt="Logo" height="30" /></a>
+            <div class="ms-auto">
+                <a class="nav-link text-white me-3" href="index.html">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="text-center mb-4">One Piece Characters</h1>
+
+        <input type="text" id="searchInput" class="form-control mb-4" placeholder="Search for a character..." />
+
+        <div id="loadingSpinner" class="text-center">
+            <div class="spinner-border text-light" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <div id="characters" class="row g-4"></div>
+    </div>
+
+    <script>
+        let allCharacters = [];
+
+        async function fetchCharacters() {
+            const url = "https://api.api-onepiece.com/v2/characters/en";
+            const spinner = document.getElementById("loadingSpinner");
+            const container = document.getElementById("characters");
+
+            spinner.style.display = "block";
+            container.innerHTML = "";
+
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                allCharacters = data;
+                displayCharacters(allCharacters);
+            } catch (error) {
+                container.innerHTML = "<p class='text-danger text-center'>Failed to load characters.</p>";
+            } finally {
+                spinner.style.display = "none";
+            }
+        }
+
+        function displayCharacters(characters) {
+            const container = document.getElementById("characters");
+            container.innerHTML = "";
+
+            characters.forEach(char => {
+                const div = document.createElement("div");
+                div.className = "col-sm-6 col-md-4";
+
+                const nameEncoded = encodeURIComponent(char.name);
+                div.innerHTML = `
+          <a href="view.html?name=${nameEncoded}" class="text-decoration-none text-white">
+            <div class="card bg-dark text-white h-100 shadow">
+              <div class="card-body">
+                <h5 class="card-title">${char.name}</h5>
+                <p><strong>Job:</strong> ${char.job || 'Unknown'}</p>
+                <p><strong>Age:</strong> ${char.age || 'N/A'}</p>
+                <p><strong>Bounty:</strong> ${char.bounty || 'N/A'}</p>
+                <p><strong>Status:</strong> ${char.status || 'N/A'}</p>
+              </div>
+            </div>
+          </a>
+        `;
+                container.appendChild(div);
+            });
+        }
+
+        function filterCharacters() {
+            const query = document.getElementById("searchInput").value.toLowerCase();
+            const filtered = allCharacters.filter(char => char.name.toLowerCase().includes(query));
+            displayCharacters(filtered);
+        }
+
+        document.getElementById("searchInput").addEventListener("input", filterCharacters);
+        window.addEventListener("DOMContentLoaded", fetchCharacters);
+    </script>
+</body>
+
+</html>
