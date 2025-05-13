@@ -50,42 +50,6 @@
             font-size: 2rem;
             animation: bounce 2s infinite;
         }
-
-        @keyframes bounce {
-
-            0%,
-            20%,
-            50%,
-            80%,
-            100% {
-                transform: translateY(0);
-            }
-
-            40% {
-                transform: translateY(8px);
-            }
-
-            60% {
-                transform: translateY(4px);
-            }
-        }
-
-        #loadingSpinner {
-            display: none;
-        }
-
-        .card {
-            transition: transform 0.3s ease, filter 0.3s ease;
-        }
-
-        .zoom {
-            transform: scale(1.05);
-            z-index: 1;
-        }
-
-        .blur {
-            filter: blur(2px);
-        }
     </style>
 </head>
 
@@ -107,7 +71,6 @@
             <div id="heroText">
                 <h1 class="display-4 fw-bold">One Piece Characters</h1>
                 <p class="lead">Discover your favorite One Piece Characters</p>
-                <a href="characters.html" class="btn btn-secondaryzs mt-3">View All Characters</a>
                 <div class="scroll-down mt-5">
                     <span class="arrow">&#8595;</span>
                 </div>
@@ -117,91 +80,20 @@
     </header>
 
     <!-- Characters Section -->
-    <div class="container my-5">
-        <h1 class="text-center mb-4">One Piece Characters</h1>
-
-        <!-- Search Input -->
-        <div class="mb-4">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search for a character..." />
-        </div>
-
-        <!-- Loading Spinner -->
-        <div id="loadingSpinner" class="text-center">
-            <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-
-
-        <!-- Characters Display -->
-        <div id="characters" class="row g-4"></div>
+    <div class="container text-center my-5">
+        <h1 class="mb-4">One Piece Story Summary</h1>
+        <h5>
+            One Piece tells the story of Monkey D. Luffy, a young man who, after eating a Devil Fruit, gains the power
+            to stretch his body like rubber. He sets sail with his crew, the Straw Hats, on a grand adventure to become
+            the Pirate King by finding the legendary treasure, One Piece, left behind by the previous Pirate King, Gold
+            Roger. The series follows their travels, battles, and growth as they navigate the dangerous world of
+            pirates, the Marines, and other powerful entities, all while striving to achieve their individual dreams and
+            reach their goals.
+        </h5>
+        <a href="characters.html" class="btn btn-secondaryzs mt-3">View All Characters</a>
     </div>
 
     <script>
-        let allCharacters = [];
-
-        async function fetchCharacters() {
-            const url = "https://api.api-onepiece.com/v2/characters/en";
-            document.getElementById("loadingSpinner").style.display = "block";
-
-            try {
-                const response = await fetch(url);
-                if (!response.ok) throw new Error("Failed to fetch characters");
-
-                const data = await response.json();
-                allCharacters = data;
-                displayCharacters(allCharacters);
-            } catch (error) {
-                console.error("Error:", error);
-                document.getElementById('characters').innerHTML = "<p class='text-danger'>Failed to load characters.</p>";
-            } finally {
-                document.getElementById("loadingSpinner").style.display = "none";
-            }
-        }
-
-        function displayCharacters(characters) {
-            const container = document.getElementById("characters");
-            container.innerHTML = "";
-            characters.forEach(char => {
-                const item = document.createElement('div');
-                item.className = "col-sm-6 col-md-4";
-                item.innerHTML = `
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">${char.name}</h5>
-                            <p><strong>Job:</strong> ${char.job || 'Unknown'}</p>
-                            <p><strong>Age:</strong> ${char.age || 'N/A'}</p>
-                            <p><strong>Bounty:</strong> ${char.bounty || 'N/A'}</p>
-                            <p><strong>Status:</strong> ${char.status || 'N/A'}</p>
-                            ${char.fruit?.name ? `<p><strong>Devil Fruit:</strong> ${char.fruit.name} (${char.fruit.type})</p>` : ""}
-                            ${char.crew?.name ? `<p><strong>Crew:</strong> ${char.crew.name}</p>` : ""}
-                        </div>
-                    </div>
-                `;
-
-                item.onmouseover = () => zoom(item);
-                item.onmouseout = resetZoom;
-
-                container.appendChild(item);
-            });
-        }
-
-        function zoom(target) {
-            target.querySelector('.card').classList.add('zoom');
-        }
-
-        function resetZoom() {
-            document.querySelectorAll('.card').forEach(card => {
-                card.classList.remove('zoom');
-            });
-        }
-
-        function filterCharacters() {
-            const query = document.getElementById("searchInput").value.toLowerCase();
-            const filtered = allCharacters.filter(char => char.name.toLowerCase().includes(query));
-            displayCharacters(filtered);
-        }
-
         const heroSection = document.getElementById("heroSection");
         const heroText = document.getElementById("heroText");
 
@@ -212,9 +104,6 @@
         heroText.addEventListener("mouseenter", () => {
             heroSection.style.backgroundImage = "url('another-background.jpg')";
         });
-
-        document.getElementById("searchInput").addEventListener("input", filterCharacters);
-        window.addEventListener("DOMContentLoaded", fetchCharacters);
     </script>
 
 </body>
