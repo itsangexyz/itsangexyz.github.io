@@ -43,7 +43,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#"><img src="logo.png" alt="Logo" height="30" /></a>
+            <a class="navbar-brand"><img src="logo.png" alt="Logo" height="30" /></a>
             <div class="navtext ms-auto d-flex">
                 <a class="nav-link text-white me-3" href="index.html">Home</a>
                 <a class="nav-link text-white me-3" href="characters.html">All Characters</a>
@@ -51,7 +51,7 @@
         </div>
     </nav>
 
-    <div id="loadingSpinner" class="text-center mt-5">
+    <div id="loadingSpinner" class="text-center  py-5 mt-5">
         <div class="spinner-border text-light" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
@@ -70,7 +70,7 @@
             const name = urlParams.get("name");
 
             if (!name) {
-                container.innerHTML = "<p class='text-danger text-center mt-5'>Character not specified.</p>";
+                container.innerHTML = "<p class='text-center py-5 mt-5'>Character not specified.</p>";
                 spinner.style.display = "none";
                 return;
             }
@@ -81,7 +81,7 @@
                 const char = data.find(c => c.name.toLowerCase() === name.toLowerCase());
 
                 if (!char) {
-                    container.innerHTML = "<p class='text-danger text-center mt-5'>Character not found.</p>";
+                    container.innerHTML = "<p class='text-danger text-center mt-5 style='text-shadow: 2px 2px 5px black;'>Character not found.</p>";
                     return;
                 }
 
@@ -97,7 +97,7 @@
         </div>
       `;
             } catch (err) {
-                container.innerHTML = "<p class='text-danger text-center mt-5'>Error loading character.</p>";
+                container.innerHTML = "<p class='text-center py-5 mt-5'>Error loading character.</p>";
             } finally {
                 spinner.style.display = "none";
             }

@@ -22,13 +22,6 @@
             background-color: rgba(51, 50, 50, 0.75);
         }
 
-        .container {
-            background-color: rgba(0, 0, 0, 0.6);
-            border-radius: 25px;
-            padding: 10rem;
-            margin-top: 100px;
-        }
-
         .card {
             transition: transform 0.3s ease;
         }
@@ -50,7 +43,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top mb-5">
         <div class="container-fluid">
             <a class="navbar-brand" href="#"><img src="logo.png" alt="Logo" height="30" /></a>
             <div class="ms-auto">
@@ -59,7 +52,7 @@
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container justify-content-center align-items-center min-vh-100 mt-5 py-5 px-3 px-md-5 rounded-4 mt-*" style="background-color: rgba(31, 30, 30, 0.418);">
         <h1 class="text-center mb-4">One Piece Characters</h1>
 
         <input type="text" id="searchInput" class="form-control mb-4" placeholder="Search for a character..." />
@@ -102,7 +95,7 @@
 
             characters.forEach(char => {
                 const div = document.createElement("div");
-                div.className = "col-sm-6 col-md-4";
+                div.className = "col-sm-12 col-md-4";
 
                 const nameEncoded = encodeURIComponent(char.name);
                 div.innerHTML = `
