@@ -90,7 +90,7 @@
             <a class="navbar-brand">
                 <img src="logo.png" alt="Logo" width="40" height="24">
             </a>
-            <button id="darkModeToggle" class="btn btn-outline-secondary btn-sm" >Dark Mode</button>
+            <button id="darkModeToggle" class="btn btn-outline-secondary btn-sm">Dark Mode</button>
         </div>
     </nav>
 
@@ -179,11 +179,15 @@
         }
 
         const darkModeToggle = document.getElementById("darkModeToggle");
+
         darkModeToggle.addEventListener("click", () => {
-            const isDark = document.body.getAttribute("data-bs-theme") == "dark";
+            const isDark = document.body.getAttribute("data-bs-theme") === "dark";
             document.body.setAttribute("data-bs-theme", isDark ? "light" : "dark");
+
             darkModeToggle.textContent = isDark ? "Dark Mode" : "Light Mode";
+            darkModeToggle.style.color = isDark ? "black" : "white";
         });
+
 
 
         document.getElementById("closeBtn").onclick = () => {
