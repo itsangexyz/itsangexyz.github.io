@@ -1,0 +1,112 @@
+/* PARALLAX.CSS */
+/*CSS created by Christopher Jay De Claro*/
+/*github.com/cjdeclaro*/
+
+/*Key Art default settings*/
+
+.keyart,
+.keyart_layer {
+	height: 1000px;
+	background-repeat: no-repeat;
+}
+
+.keyart {
+	position: relative;
+	z-index: 10;
+}
+
+.keyart_layer {
+	background-position: bottom center;
+	background-size: auto 1038px;
+	width: 100%;
+	position: absolute;
+}
+
+.keyart_layer.parallax {
+	position: fixed;
+}
+
+.main-content {
+	position: relative;
+	z-index: 200;
+	overflow: hidden;
+	/* ensures pseudo-element doesn't spill out */
+}
+
+/* Add blur effect using a pseudo-element */
+.main-content::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	/* for Safari */
+	z-index: -1;
+}
+
+.card {
+	background-color: #ffffff;
+	color: #000;
+	border-radius: 10px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+	transition: transform 0.3s;
+}
+
+.card:hover {
+	transform: translateY(-5px);
+}
+
+.card h5 {
+	font-weight: 600;
+}
+
+footer {
+	text-align: center;
+	padding: 20px;
+	background-color: #120125;
+	color: #ccc;
+}
+
+
+#keyart-0 {
+	background-image: url(img/parallax0.png);
+}
+
+#keyart-1 {
+	background-image: url(img/parallax1.png);
+}
+
+#keyart-2 {
+	background-image: url(img/parallax2.png);
+}
+
+#keyart-3 {
+	background-image: url(img/parallax3.png);
+}
+
+#keyart-4 {
+	background-image: url(img/parallax4.png);
+}
+
+#keyart-5 {
+	background-image: url(img/parallax5.png);
+}
+
+#keyart-6 {
+	background-image: url(img/parallax6.png);
+}
+
+#keyart-7 {
+	background-image: url(img/parallax7.png);
+}
+
+#keyart-8 {
+	background-image: url(img/parallax8.png);
+}
+
+#keyart-scrim {
+	opacity: 0;
+}
