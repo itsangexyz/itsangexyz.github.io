@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our 1st Anniversary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rose: #ff4d6d;
+            --rose-dark: #800e13;
+            --dark: #0b090a;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            perspective: 2000px; /* Enhanced depth for the unfold */
+        }
+
+        /* --- THE FLAPS --- */
+        .flap {
+            position: fixed;
+            left: 0;
+            width: 100%;
+            height: 50vh;
+            background: linear-gradient(135deg, #1a0a0c 0%, #2b0f12 100%);
+            z-index: 10;
+            transition: all 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+            border: 1px solid rgba(255, 77, 109, 0.05);
+            display: flex;
+            justify-content: center;
+            pointer-events: none; /* Allows clicking the heart through the flaps if needed */
+        }
+
+        .top-flap {
+            top: 0;
+            transform-origin: top;
+            align-items: flex-end;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .bottom-flap {
+            bottom: 0;
+            transform-origin: bottom;
+            align-items: flex-start;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.5);
+        }
+
+        /* --- UNFOLD ACTION --- */
+        .unfolded .top-flap {
+            transform: rotateX(110deg);
+            opacity: 0;
+        }
+
+        .unfolded .bottom-flap {
+            transform: rotateX(-110deg);
+            opacity: 0;
+        }
+
+        .unfolded #game-zone {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.5);
+            pointer-events: none;
+        }
+
+        /* --- HEART/LOCK SCREEN --- */
+        #game-zone { 
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+            text-align: center;
+            transition: all 0.8s ease;
+        }
+
+        .pulse-heart {
+            font-size: 80px;
+            cursor: pointer;
+            animation: pulse 1.5s infinite;
+            filter: drop-shadow(0 0 15px var(--rose));
+            transition: 0.3s;
+        }
+
+        .pulse-heart:hover { transform: scale(1.2); }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- REVEALED CONTENT --- */
+        #main-content {
+            width: 90%;
+            max-width: 450px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 77, 109, 0.3);
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.4s;
+        }
+
+        .unfolded #main-content {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        h1 { font-family: 'Dancing Script', cursive; font-size: 2.5rem; color: var(--rose); margin: 10px 0; }
+
+        .stat-box { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
+        .stat { background: rgba(255, 77, 109, 0.15); padding: 15px; border-radius: 15px; border: 1px solid var(--rose); }
+        .stat span { display: block; font-size: 1.5rem; font-weight: bold; color: var(--rose); }
+
+        .timeline { text-align: left; margin-top: 30px; border-left: 2px solid var(--rose); padding-left: 20px; }
+        .moment { margin-bottom: 20px; position: relative; }
+        .moment::before { content: '✨'; position: absolute; left: -32px; top: 0; background: var(--dark); padding: 2px; }
+
+        .btn {
+            background: var(--rose);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        /* --- POPUP & KISSES (Same as before) --- */
+        #photo-popup {
+            position: fixed; top: 50%; left: 50%; z-index: 100;
+            display: flex; align-items: center;
+            background: white; padding: 15px; border-radius: 20px;
+            visibility: hidden; opacity: 0;
+            transform: translate(-50%, -50%) scale(0) rotate(-360deg);
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 0 50px var(--rose);
+        }
+        #photo-popup.show { visibility: visible; opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+        #photo-popup img { width: 250px; height: 250px; object-fit: cover; border-radius: 15px; }
+        .popup-text { padding: 20px; color: #333; max-width: 200px; text-align: left; }
+
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 99;
+            visibility: hidden; opacity: 0; transition: opacity 0.5s;
+        }
+        .overlay.active { visibility: visible; opacity: 1; }
+
+        .kiss-emoji { position: fixed; bottom: -50px; font-size: 2.5rem; pointer-events: none; z-index: 101; animation: floatUp 3s ease-out forwards; }
+        @keyframes floatUp { 0% { transform: translateY(0) scale(0.5); opacity: 1; } 100% { transform: translateY(-100vh) scale(1.5); opacity: 0; } }
+        
+        @media (max-width: 600px) {
+            #photo-popup { flex-direction: column; width: 80%; }
+            .popup-text { text-align: center; }
+            #photo-popup img { width: 100%; height: auto; }
+        }
+    </style>
+</head>
+<body id="container">
+
+    <div class="flap top-flap"></div>
+    <div class="flap bottom-flap"></div>
+
+    <div id="game-zone">
+        <div class="pulse-heart" onclick="unfold()">❤️</div>
+        <h2 style="font-weight: 300;">Tap to Open Our Year 1</h2>
+    </div>
+
+    <div id="main-content">
+        <span style="font-size: 0.8rem; letter-spacing: 2px; opacity: 0.7;">365 DAYS TOGETHER</span>
+        <h1>Happy Anniversary!</h1>
+        
+        <div class="stat-box">
+            <div class="stat"><span>365</span>Days</div>
+            <div class="stat"><span>8,760</span>Hours</div>
+        </div>
+
+        <div class="timeline">
+            <div class="moment">
+                <strong>The Beginning</strong>
+                <p>The day everything changed. Birthday + Anniversary = Best Day Ever! HAHA!</p>
+            </div>
+            <div class="moment">
+                <strong>The Dali Dates</strong>
+                <p>Buying snacks and just being home together. My favorite core memory.</p>
+            </div>
+        </div>
+        
+        <button class="btn" onclick="triggerSurprise()">Claim Your Kiss 💋</button>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="closeSurprise()"></div>
+
+    <div id="photo-popup">
+        <img src="kiss.gif" alt="Our Photo">
+        <div class="popup-text">
+            <h3 style="margin:0;">1 Year ❤️</h3>
+            <p>I love you more every single day!</p>
+        </div>
+    </div>
+
+    <script>
+        function unfold() {
+            // Adds the class to the body to trigger the flap rotations
+            document.body.classList.add('unfolded');
+        }
+
+        function triggerSurprise() {
+            document.getElementById('photo-popup').classList.add('show');
+            document.getElementById('overlay').classList.add('active');
+            for(let i = 0; i < 25; i++) {
+                setTimeout(createKiss, i * 100);
+            }
+        }
+
+        function createKiss() {
+            const kiss = document.createElement('div');
+            kiss.className = 'kiss-emoji';
+            kiss.innerHTML = '💋';
+            kiss.style.left = Math.random() * 100 + 'vw';
+            document.body.appendChild(kiss);
+            setTimeout(() => kiss.remove(), 3000);
+        }
+
+        function closeSurprise() {
+            document.getElementById('photo-popup').classList.remove('show');
+            document.getElementById('overlay').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
