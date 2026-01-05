@@ -23,9 +23,10 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden;
+            /* Responsive Change: allow scrolling on tall content */
+            overflow-x: hidden;
+            overflow-y: auto;
             perspective: 2000px;
-            /* Enhanced depth for the unfold */
         }
 
         /* --- THE FLAPS --- */
@@ -35,13 +36,12 @@
             width: 100%;
             height: 50vh;
             background: linear-gradient(135deg, #1a0a0c 0%, #2b0f12 100%);
-            z-index: 10;
+            z-index: 50;
             transition: all 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
             border: 1px solid rgba(255, 77, 109, 0.05);
             display: flex;
             justify-content: center;
             pointer-events: none;
-            /* Allows clicking the heart through the flaps if needed */
         }
 
         .top-flap {
@@ -62,11 +62,13 @@
         .unfolded .top-flap {
             transform: rotateX(110deg);
             opacity: 0;
+            visibility: hidden;
         }
 
         .unfolded .bottom-flap {
             transform: rotateX(-110deg);
             opacity: 0;
+            visibility: hidden;
         }
 
         .unfolded #game-zone {
@@ -77,13 +79,14 @@
 
         /* --- HEART/LOCK SCREEN --- */
         #game-zone {
-            position: absolute;
+            position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 20;
+            z-index: 60;
             text-align: center;
             transition: all 0.8s ease;
+            width: 100%;
         }
 
         .pulse-heart {
@@ -94,22 +97,10 @@
             transition: 0.3s;
         }
 
-        .pulse-heart:hover {
-            transform: scale(1.2);
-        }
-
         @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.15);
-            }
-
-            100% {
-                transform: scale(1);
-            }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
         }
 
         /* --- REVEALED CONTENT --- */
@@ -118,13 +109,15 @@
             max-width: 450px;
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(15px);
-            padding: 40px;
+            padding: 40px 20px;
+            margin: 20px;
             border-radius: 30px;
             border: 1px solid rgba(255, 77, 109, 0.3);
             text-align: center;
             opacity: 0;
             transform: scale(0.8);
             transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.4s;
+            box-sizing: border-box;
         }
 
         .unfolded #main-content {
@@ -194,12 +187,12 @@
             width: 100%;
         }
 
-        /* --- POPUP & KISSES (Same as before) --- */
+        /* --- POPUP & KISSES --- */
         #photo-popup {
-            position: absolute;
+            position: fixed;
             top: 50%;
             left: 50%;
-            z-index: 100;
+            z-index: 1000;
             display: flex;
             align-items: center;
             background: white;
@@ -210,6 +203,9 @@
             transform: translate(-50%, -50%) scale(0) rotate(-360deg);
             transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
             box-shadow: 0 0 50px var(--rose);
+            width: 90%;
+            max-width: 500px;
+            box-sizing: border-box;
         }
 
         #photo-popup.show {
@@ -219,8 +215,8 @@
         }
 
         #photo-popup img {
-            width: 250px;
-            height: 250px;
+            width: 150px;
+            height: 150px;
             object-fit: cover;
             border-radius: 15px;
         }
@@ -228,8 +224,8 @@
         .popup-text {
             padding: 20px;
             color: #333;
-            max-width: 200px;
             text-align: left;
+            flex: 1;
         }
 
         .overlay {
@@ -239,7 +235,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
-            z-index: 99;
+            z-index: 999;
             visibility: hidden;
             opacity: 0;
             transition: opacity 0.5s;
@@ -250,82 +246,73 @@
             opacity: 1;
         }
 
+        /* Music Toggle Button */
+        #music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: rgba(255, 77, 109, 0.3);
+            border: 1px solid var(--rose);
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 45px;
+            height: 45px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Falling Logic */
         .kiss-emoji {
             position: fixed;
             bottom: -50px;
             font-size: 2.5rem;
             pointer-events: none;
-            z-index: 101;
+            z-index: 1001;
             animation: floatUp 3s ease-out forwards;
         }
 
         @keyframes floatUp {
-            0% {
-                transform: translateY(0) scale(0.5);
-                opacity: 1;
-            }
-
-            100% {
-                transform: translateY(-100vh) scale(1.5);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) scale(0.5); opacity: 1; }
+            100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
         }
 
-        @media (max-width: 700px) {
-            #photo-popup {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .popup-text {
-                text-align: center;
-            }
-
-            #photo-popup img {
-                width: 100%;
-                height: auto;
-            }
-        }
-
-        /* Styling for the falling keychain images */
         .falling-keychain {
             position: fixed;
             top: -100px;
-            /* Start off-screen */
             width: 80px;
-            /* Keychain size */
             height: 80px;
             object-fit: contain;
             pointer-events: none;
-            z-index: 101;
+            z-index: 1001;
             animation: fallDown 4s linear forwards;
-            /* Optional: adds a little shadow to make them pop */
             filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.3));
         }
 
-       @keyframes fallDown {
-    0% {
-        transform: translateY(0) translateX(0) rotate(0deg);
-        opacity: 1;
-    }
-    25% {
-        transform: translateY(25vh) translateX(15px) rotate(90deg);
-    }
-    50% {
-        transform: translateY(50vh) translateX(-15px) rotate(180deg);
-    }
-    75% {
-        transform: translateY(75vh) translateX(15px) rotate(270deg);
-    }
-    100% {
-        transform: translateY(110vh) translateX(0) rotate(360deg);
-        opacity: 0.8;
-    }
-}
+        @keyframes fallDown {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0.8; }
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 600px) {
+            #photo-popup { flex-direction: column; text-align: center; }
+            #photo-popup img { width: 100%; height: auto; max-width: 200px; }
+            .popup-text { text-align: center; padding: 10px; }
+            h1 { font-size: 2rem; }
+            .stat span { font-size: 1.2rem; }
+        }
     </style>
 </head>
 
 <body id="container">
+
+    <audio id="bgMusic" loop>
+        <source src="tahanan.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="music-btn" onclick="toggleMusic()">🎵</button>
 
     <div class="flap top-flap"></div>
     <div class="flap bottom-flap"></div>
@@ -373,16 +360,36 @@
     </div>
 
     <script>
+        const song = document.getElementById('bgMusic');
+
         function unfold() {
-            // Adds the class to the body to trigger the flap rotations
             document.body.classList.add('unfolded');
+            // Play music on first interaction
+            song.play().catch(e => console.log("Auto-play blocked, waiting for next click."));
+        }
+
+        function toggleMusic() {
+            const btn = document.getElementById('music-btn');
+            if (song.paused) {
+                song.play();
+                btn.innerHTML = "🎵";
+            } else {
+                song.pause();
+                btn.innerHTML = "🔇";
+            }
         }
 
         function triggerSurprise() {
             document.getElementById('photo-popup').classList.add('show');
             document.getElementById('overlay').classList.add('active');
-            for (let i = 0; i < 25; i++) {
-                setTimeout(createKiss, i * 100);
+            
+            // Trigger falling keychains
+            for (let i = 0; i < 20; i++) {
+                setTimeout(createKeychain, i * 150);
+            }
+            // Trigger kisses
+            for (let i = 0; i < 15; i++) {
+                setTimeout(createKiss, i * 200);
             }
         }
 
@@ -390,7 +397,7 @@
             const kiss = document.createElement('div');
             kiss.className = 'kiss-emoji';
             kiss.innerHTML = '💋';
-            kiss.style.left = Math.random() * 100 + 'vw';
+            kiss.style.left = Math.random() * 95 + 'vw';
             document.body.appendChild(kiss);
             setTimeout(() => kiss.remove(), 3000);
         }
@@ -399,75 +406,28 @@
             document.getElementById('photo-popup').classList.remove('show');
             document.getElementById('overlay').classList.remove('active');
         }
-        // Array of your different image files
+
         const keychainImages = [
-            'img/1.jpg',
-            'img/2.jpg',
-            'img/3.jpg',
-            'img/4.jpg',
-            'img/5.jpg',
-            'img/6.jpg',
-            'img/7.jpg',
-            'img/8.jpg',
-            'img/9.jpg',
-            'img/10.jpg',
-            'img/11.jpg',
-            'img/12.jpg',
-            'img/13.jpg',
-            'img/14.jpg',
-            'img/15.jpg',
-            'img/16.jpg',
-            'img/17.jpg',
-            'img/18.jpg',
-            'img/19.jpg',
-            'img/20.jpg',
-            'img/22.jpg',
-            'img/23.jpg',
-            'img/24.jpg',
-            'img/25.jpg',
+            'img/1.jpg', 'img/2.jpg', 'img/3.jpg', 'img/4.jpg', 'img/5.jpg',
+            'img/6.jpg', 'img/7.jpg', 'img/8.jpg', 'img/9.jpg', 'img/10.jpg',
+            'img/11.jpg', 'img/12.jpg', 'img/13.jpg', 'img/14.jpg', 'img/15.jpg',
+            'img/16.jpg', 'img/17.jpg', 'img/18.jpg', 'img/19.jpg', 'img/20.jpg',
+            'img/22.jpg', 'img/23.jpg', 'img/24.jpg', 'img/25.jpg',
         ];
-
-        function triggerSurprise() {
-            // Show the popup and overlay
-            document.getElementById('photo-popup').classList.add('show');
-            document.getElementById('overlay').classList.add('active');
-
-            // Trigger 20 falling images with a slight delay between each
-            for (let i = 0; i < 20; i++) {
-                setTimeout(createKeychain, i * 150);
-            }
-
-            // Also trigger some kisses for the extra effect!
-            for (let i = 0; i < 15; i++) {
-                setTimeout(createKiss, i * 200);
-            }
-        }
 
         function createKeychain() {
             const img = document.createElement('img');
             const randomSrc = keychainImages[Math.floor(Math.random() * keychainImages.length)];
             img.src = randomSrc;
             img.className = 'falling-keychain';
-
-            // Size logic (20px to 50px)
             const size = Math.floor(Math.random() * 50) + 30;
             img.style.width = size + 'px';
-
             img.style.left = Math.random() * 90 + 'vw';
-
-            // --- SLOWER DURATION ---
-            // (Math.random() * 3) + 6 means a speed between 6 and 9 seconds.
-            // Make sure to use 's' for seconds!
-            const duration = (Math.random() * 3) + 6;
+            const duration = (Math.random() * 3) + 4;
             img.style.animationDuration = duration + 's';
-
             document.body.appendChild(img);
-
-            // Increase the removal time to 10000 (10 seconds) 
-            // so they don't disappear before reaching the bottom!
-            setTimeout(() => img.remove(), 10000);
+            setTimeout(() => img.remove(), 6000);
         }
     </script>
 </body>
-
 </html>
